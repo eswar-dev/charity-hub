@@ -23,6 +23,17 @@
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "DM Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --font-impact: "Bebas Neue", sans-serif;
+  /* Social layer additions */
+  --feed-bg: #f7f7f2;
+  --story-ring: #0d7377;
+  --live-red: #ef4444;
+  --impact-gold: #d97706;
+  --compete-purple: #7c3aed;
+  --platform-ig: #e1306c;
+  --platform-tt: #010101;
+  --platform-yt: #ff0000;
+  --platform-ch: #0d7377;
 }
 
 body {
@@ -113,4 +124,34 @@ body {
 
 .toast-enter {
   animation: toast-in 0.3s ease forwards;
+}
+
+.font-impact {
+  font-family: var(--font-impact);
+}
+
+@keyframes pulse-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-live {
+  animation: pulse-live 1.2s ease-in-out infinite;
+}
+
+@keyframes flywheel-dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.flywheel-arrow {
+  stroke-dasharray: 12 8;
+  stroke-dashoffset: 40;
+  animation: flywheel-dash 6s linear infinite;
 }

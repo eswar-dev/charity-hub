@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
+import {
+  Playfair_Display,
+  DM_Sans,
+  JetBrains_Mono,
+  Bebas_Neue,
+} from "next/font/google";
 import "./globals.css";
 import { PersonaProvider } from "@/context/PersonaContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { PrototypeWatermark } from "@/components/shared/PrototypeWatermark";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -23,6 +29,13 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+const bebas = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bebas",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Charity Hub — Static Prototype",
   description:
@@ -37,12 +50,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}
+      className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable} ${bebas.variable}`}
     >
-      <body className="min-h-screen antialiased" style={{ fontFamily: "var(--font-body)" }}>
+      <body className="min-h-screen pb-16 antialiased md:pb-0" style={{ fontFamily: "var(--font-body)" }}>
         <PersonaProvider>
           <ToastProvider>
             {children}
+            <MobileBottomNav />
             <PrototypeWatermark />
           </ToastProvider>
         </PersonaProvider>

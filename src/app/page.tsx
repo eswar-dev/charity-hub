@@ -12,6 +12,7 @@ import {
   Sparkles,
   Users,
   Zap,
+  Smartphone,
 } from "lucide-react";
 
 const personaCards: {
@@ -64,6 +65,15 @@ const personaCards: {
   },
 ];
 
+const socialCard = {
+  title: "Social Media Layer",
+  description:
+    "Feed, competition, creator profiles, and the platform story",
+  href: "/feed",
+  icon: Smartphone,
+  color: "var(--compete-purple)",
+};
+
 const loop = ["Awareness", "Participation", "Engagement", "Donation", "Distribution / Impact"];
 
 const layers = [
@@ -88,23 +98,31 @@ export default function LandingPage() {
             <p className="text-sm uppercase tracking-widest text-teal-200/90">
               Static Prototype v2.0
             </p>
-            <h1 className="font-display mt-4 text-4xl font-bold leading-tight md:text-5xl">
-              Charity Hub
+            <h1 className="font-display mt-4 text-3xl font-bold leading-tight md:text-4xl">
+              The social participation network where creativity creates real-world change
             </h1>
             <p className="mt-4 text-lg text-teal-50/90">
-              Any event can become a reason to give.
+              Social Entrepreneurs create cause-driven events. Communities participate. Impact follows.
             </p>
             <p className="mt-2 text-sm opacity-80">
-              Event-led charitable fundraising for US 501(c)(3) nonprofits, Social
-              Entrepreneurs, and donors.
+              Any event can become a reason to give.
             </p>
-            <Link
-              href="/events"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--ch-navy)]"
-            >
-              Explore as Guest
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/feed"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--ch-navy)]"
+              >
+                Explore the Feed
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/about/mental-model"
+                className="inline-flex items-center gap-2 rounded-full border border-white/50 px-6 py-3 text-sm font-medium"
+              >
+                See How We&apos;re Different
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -185,6 +203,62 @@ export default function LandingPage() {
                 </Link>
               );
             })}
+            <Link
+              href={socialCard.href}
+              className="group rounded-2xl border border-purple-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sm:col-span-2 lg:col-span-1"
+            >
+              <div
+                className="inline-flex rounded-xl p-3 text-white"
+                style={{ backgroundColor: socialCard.color }}
+              >
+                <Smartphone className="h-5 w-5" aria-hidden />
+              </div>
+              <h3 className="font-display mt-4 text-lg font-semibold group-hover:text-[var(--compete-purple)]">
+                📱 {socialCard.title}
+              </h3>
+              <p className="mt-2 text-sm text-gray-600">{socialCard.description}</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[var(--compete-purple)]">
+                Enter Social Experience <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+        </section>
+
+        <section className="mt-16">
+          <h2 className="font-display text-center text-2xl font-semibold text-[var(--ch-navy)]">
+            NOT just another fundraising platform.
+          </h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: "Like Instagram for good causes",
+                points: ["Storytelling", "Content feed", "Community"],
+              },
+              {
+                title: "Like a competition for change",
+                points: ["Friendly rivalry", "SE vs SE", "Causes collide"],
+              },
+              {
+                title: "Unlike anything else",
+                points: [
+                  "Donations as by-product",
+                  "Of real engagement",
+                  "Impact-first algorithm",
+                ],
+              },
+            ].map((col) => (
+              <div
+                key={col.title}
+                className="rounded-2xl border bg-white p-6 shadow-sm"
+              >
+                <h3 className="font-semibold text-[var(--ch-navy)]">{col.title}</h3>
+                <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                  {col.points.map((p) => (
+                    <li key={p}>→ {p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </section>
 
