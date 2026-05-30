@@ -2,13 +2,54 @@
 
 import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { TopBar } from "@/components/layout/TopBar";
 import { FeedPostCard } from "@/components/social/FeedPostCard";
 import { feedPosts, type FeedPost, type FeedPostType } from "@/data/feed";
 import { creators } from "@/data/creators";
 import { usePersona } from "@/context/PersonaContext";
 import { X } from "lucide-react";
+
+function StoryRing({
+  src,
+  label,
+  onClick,
+  ariaLabel,
+}: {
+  src: string;
+  label: ReactNode;
+  onClick?: () => void;
+  ariaLabel: string;
+}) {
+  const ring = (
+    <div className="relative h-[72px] w-[72px] shrink-0 rounded-full bg-[var(--story-ring)] p-[3px]">
+      <div className="relative h-full w-full overflow-hidden rounded-full bg-gray-100">
+        <CdnImage
+          src={src}
+          alt=""
+          fill
+          className="object-cover"
+          sizes="72px"
+          cdnOptions={{ width: 144, height: 144, fit: "cover" }}
+        />
+      </div>
+    </div>
+  );
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-[72px] shrink-0 flex-col items-center gap-1.5"
+      aria-label={ariaLabel}
+    >
+      {ring}
+      <span className="w-full truncate text-center text-[10px] leading-tight text-gray-700">
+        {label}
+      </span>
+    </button>
+  );
+}
 
 const tabs: { id: string; label: string; types?: FeedPostType[] }[] = [
   { id: "all", label: "All" },
@@ -43,47 +84,35 @@ export default function FeedPage() {
               {persona === "se" && (
                 <Link
                   href="/se/create-story"
-                  className="flex shrink-0 flex-col items-center gap-1"
+                  className="flex w-[72px] shrink-0 flex-col items-center gap-1.5"
                 >
-                  <div className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 border-dashed border-[var(--story-ring)] bg-white text-2xl text-[var(--ch-teal)]">
+                  <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full border-2 border-dashed border-[var(--story-ring)] bg-white text-2xl text-[var(--ch-teal)]">
                     +
                   </div>
-                  <span className="max-w-[72px] truncate text-center text-[10px] font-medium">
+                  <span className="w-full truncate text-center text-[10px] font-medium leading-tight">
                     Create Story
                   </span>
                 </Link>
               )}
               {creators.map((c, i) => (
-                <button
+                <StoryRing
                   key={c.id}
-                  type="button"
+                  src={c.avatar}
                   onClick={() => setStoryOpen(c)}
-                  className="flex shrink-0 flex-col items-center gap-1"
-                  aria-label={`View story from ${c.name}`}
-                >
-                  <div className="rounded-full p-[3px] ring-2 ring-[var(--story-ring)]">
-                    <CdnImage
-                      src={c.avatar}
-                      alt=""
-                      width={72}
-                      height={72}
-                      className="rounded-full"
-                      cdnOptions={{ width: 144, height: 144, fit: "cover" }}
-                    />
-                  </div>
-                  <span className="max-w-[72px] truncate text-center text-[10px]">
-                    {i === 0 ? (
-                      <span className="flex items-center justify-center gap-0.5 text-[var(--live-red)]">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--live-red)] animate-pulse-live" />
-                        Live Now
+                  ariaLabel={`View story from ${c.name}`}
+                  label={
+                    i === 0 ? (
+                      <span className="inline-flex max-w-full items-center justify-center gap-0.5 text-[9px] font-medium text-[var(--live-red)]">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--live-red)] animate-pulse-live" />
+                        <span className="truncate">Live Now</span>
                       </span>
                     ) : i === 1 ? (
-                      <span className="text-[var(--ch-teal)]">New</span>
+                      <span className="font-medium text-[var(--ch-teal)]">New</span>
                     ) : (
                       c.name.split(" ")[0]
-                    )}
-                  </span>
-                </button>
+                    )
+                  }
+                />
               ))}
             </div>
           </div>
