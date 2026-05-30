@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import { nonprofits } from "@/data/nonprofits";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 
@@ -16,7 +16,7 @@ export default function AdminNonprofitsPage() {
             key={np.id}
             className="flex items-center gap-4 rounded-2xl border bg-white p-5 shadow-sm"
           >
-            <Image src={np.logo} alt="" width={48} height={48} className="rounded-xl" />
+            <CdnImage src={np.logo} alt="" width={48} height={48} className="rounded-xl" cdnOptions={{ width: 96, height: 96 }} />
             <div className="flex-1">
               <h3 className="font-semibold">{np.name}</h3>
               <p className="font-mono text-xs text-gray-500">EIN {np.ein}</p>

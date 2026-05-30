@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import { TopBar } from "@/components/layout/TopBar";
 import { leaderboard } from "@/data/compete";
@@ -62,13 +62,14 @@ export default function LeaderboardPage() {
                       #{entry.rank}
                     </p>
                     {creator && (
-                      <Image
-                        src={creator.avatar}
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="mx-auto mt-2 rounded-full"
-                      />
+                    <CdnImage
+                      src={creator.avatar}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="mx-auto mt-2 rounded-full"
+                      cdnOptions={{ width: 96, height: 96, fit: "cover" }}
+                    />
                     )}
                     <p className="mt-2 line-clamp-3 text-[10px] font-medium leading-snug text-gray-800 sm:text-xs">
                       {entry.challengeName}

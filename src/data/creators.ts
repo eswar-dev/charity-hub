@@ -3,6 +3,7 @@ export type CreatorProfile = {
   name: string;
   handle: string;
   avatar: string;
+  bannerKey: string;
   bio: string;
   causeCategories: string[];
   eventsCreated: number;
@@ -21,7 +22,8 @@ export const creators: CreatorProfile[] = [
     id: "se-001",
     name: "Alex Rivera",
     handle: "@alexforgood",
-    avatar: "https://picsum.photos/seed/alex/200/200",
+    avatar: "creators/se-001/avatar",
+    bannerKey: "creators/se-001/banner",
     bio: "Fighting for ALS research one event at a time. Boxer, community builder, and believer that any event can become a reason to give.",
     causeCategories: ["Health", "Community"],
     eventsCreated: 4,
@@ -38,7 +40,8 @@ export const creators: CreatorProfile[] = [
     id: "se-002",
     name: "Jordan Kim",
     handle: "@jordanchanges",
-    avatar: "https://picsum.photos/seed/jordan/200/200",
+    avatar: "creators/se-002/avatar",
+    bannerKey: "creators/se-002/banner",
     bio: "Educator and storyteller. I believe every child deserves a book and a chance. Creating events that fund classrooms.",
     causeCategories: ["Education", "Youth"],
     eventsCreated: 7,
@@ -55,7 +58,8 @@ export const creators: CreatorProfile[] = [
     id: "se-003",
     name: "Morgan Patel",
     handle: "@morgangreen",
-    avatar: "https://picsum.photos/seed/morgan/200/200",
+    avatar: "creators/se-003/avatar",
+    bannerKey: "creators/se-003/banner",
     bio: "Environmental activist and community organizer. I turn cleanups into movements.",
     causeCategories: ["Environment", "Community"],
     eventsCreated: 3,

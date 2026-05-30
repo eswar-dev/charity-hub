@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { TopBar } from "@/components/layout/TopBar";
@@ -62,12 +62,13 @@ export default function FeedPage() {
                   aria-label={`View story from ${c.name}`}
                 >
                   <div className="rounded-full p-[3px] ring-2 ring-[var(--story-ring)]">
-                    <Image
+                    <CdnImage
                       src={c.avatar}
                       alt=""
                       width={72}
                       height={72}
                       className="rounded-full"
+                      cdnOptions={{ width: 144, height: 144, fit: "cover" }}
                     />
                   </div>
                   <span className="max-w-[72px] truncate text-center text-[10px]">
@@ -135,7 +136,7 @@ export default function FeedPage() {
             <h3 className="mb-4 font-semibold">Top Impact Creators</h3>
             {topCreators.map((c) => (
               <div key={c.id} className="mb-4 flex items-center gap-3 last:mb-0">
-                <Image src={c.avatar} alt="" width={40} height={40} className="rounded-full" />
+                <CdnImage src={c.avatar} alt="" width={40} height={40} className="rounded-full" cdnOptions={{ width: 80, height: 80 }} />
                 <div className="min-w-0 flex-1">
                   <Link href={`/creators/${c.id}`} className="text-sm font-medium hover:underline">
                     {c.name}
@@ -200,7 +201,7 @@ export default function FeedPage() {
         <div className="fixed inset-0 z-[60] flex flex-col bg-black/95 p-6 text-white">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <Image src={storyOpen.avatar} alt="" width={40} height={40} className="rounded-full" />
+              <CdnImage src={storyOpen.avatar} alt="" width={40} height={40} className="rounded-full" />
               <div>
                 <p className="font-semibold">{storyOpen.name}</p>
                 <p className="text-sm opacity-70">{storyOpen.handle}</p>

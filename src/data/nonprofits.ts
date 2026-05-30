@@ -12,7 +12,7 @@ export const nonprofits: Nonprofit[] = [
     eventsCount: 3,
     totalRaised: 24500,
     adminName: "Sarah Chen",
-    logo: "https://picsum.photos/seed/greenpath/80/80",
+    logo: "nonprofits/np-001/logo",
   },
   {
     id: "np-002",
@@ -25,7 +25,7 @@ export const nonprofits: Nonprofit[] = [
     eventsCount: 7,
     totalRaised: 89000,
     adminName: "Marcus Williams",
-    logo: "https://picsum.photos/seed/brightfutures/80/80",
+    logo: "nonprofits/np-002/logo",
   },
   {
     id: "np-003",
@@ -38,7 +38,7 @@ export const nonprofits: Nonprofit[] = [
     eventsCount: 0,
     totalRaised: 0,
     adminName: "Priya Patel",
-    logo: "https://picsum.photos/seed/cityshelter/80/80",
+    logo: "nonprofits/np-003/logo",
   },
 ];
 

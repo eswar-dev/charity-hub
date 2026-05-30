@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import type { Event } from "@/types";
 import { getNonprofitById } from "@/data/nonprofits";
@@ -18,12 +18,13 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <article className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:shadow-md">
       <div className="relative h-44 w-full">
-        <Image
+        <CdnImage
           src={event.banner}
           alt=""
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 33vw"
+          cdnOptions={{ width: 800, height: 400, fit: "cover" }}
         />
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-xs font-medium text-[var(--ch-navy)]">
           {event.causeCategory}

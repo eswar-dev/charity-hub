@@ -95,6 +95,8 @@ export interface Event {
   startDate: string;
   causeCategory: string;
   banner: string;
+  /** CDN asset key for event highlight video — see media-catalog.ts */
+  video?: string;
   story: string;
   donationCTA: string;
 }

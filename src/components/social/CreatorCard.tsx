@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import type { CreatorProfile } from "@/data/creators";
 
@@ -9,12 +9,13 @@ interface CreatorCardProps {
 export function CreatorCard({ creator }: CreatorCardProps) {
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:shadow-md">
-      <Image
+      <CdnImage
         src={creator.avatar}
         alt=""
         width={80}
         height={80}
         className="mx-auto rounded-full"
+        cdnOptions={{ width: 160, height: 160, fit: "cover" }}
       />
       <h3 className="mt-4 text-center font-semibold text-[var(--ch-navy)]">
         {creator.name}

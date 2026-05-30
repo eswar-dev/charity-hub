@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import { socialEntrepreneurs } from "@/data/users";
 import { getNonprofitById } from "@/data/nonprofits";
@@ -11,7 +11,7 @@ export default function SEProfilePage() {
     <div className="max-w-lg">
       <Link href="/se/dashboard" className="text-sm text-purple-600">← Back</Link>
       <div className="mt-6 rounded-2xl border bg-white p-8 shadow-sm text-center">
-        <Image src={alex.avatar} alt="" width={96} height={96} className="mx-auto rounded-full" />
+        <CdnImage src={alex.avatar} alt="" width={96} height={96} className="mx-auto rounded-full" cdnOptions={{ width: 192, height: 192 }} />
         <h1 className="font-display mt-4 text-2xl font-semibold">{alex.name}</h1>
         <p className="mt-2 text-gray-600">{alex.bio}</p>
         <p className="mt-4 text-sm">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import { nonprofits } from "@/data/nonprofits";
 import { events } from "@/data/events";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -12,7 +12,7 @@ export default function LaunchpadPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4">
-        <Image src={np.logo} alt="" width={64} height={64} className="rounded-2xl" />
+        <CdnImage src={np.logo} alt="" width={64} height={64} className="rounded-2xl" cdnOptions={{ width: 128, height: 128 }} />
         <div>
           <h1 className="font-display text-3xl font-semibold text-[var(--ch-navy)]">
             {np.name}

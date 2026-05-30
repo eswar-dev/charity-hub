@@ -1,5 +1,6 @@
 import type { Event } from "@/types";
 
+/** `banner` values are CDN asset keys — see src/lib/media-catalog.ts */
 export const events: Event[] = [
   {
     id: "evt-001",
@@ -13,7 +14,8 @@ export const events: Event[] = [
     participants: 54,
     startDate: "2026-06-15",
     causeCategory: "Health",
-    banner: "https://picsum.photos/seed/knockout/800/400",
+    banner: "events/evt-001/banner",
+    video: "events/evt-001/video",
     story:
       "Every round counts. Join us for a night of boxing to knock out ALS once and for all.",
     donationCTA: "Donate to knock out ALS",
@@ -30,7 +32,8 @@ export const events: Event[] = [
     participants: 32,
     startDate: "2026-04-22",
     causeCategory: "Environment",
-    banner: "https://picsum.photos/seed/greenclean/800/400",
+    banner: "events/evt-002/banner",
+    video: "events/evt-002/video",
     story:
       "Join GreenPath Foundation for our annual city-wide cleanup. Every dollar plants a tree.",
     donationCTA: "Fund a cleaner city",
@@ -47,7 +50,8 @@ export const events: Event[] = [
     participants: 0,
     startDate: "2026-08-01",
     causeCategory: "Education",
-    banner: "https://picsum.photos/seed/backpack/800/400",
+    banner: "events/evt-003/banner",
+    video: "events/evt-003/video",
     story:
       "Help us fill 200 backpacks with school supplies for kids who need it most.",
     donationCTA: "Fill a backpack today",
@@ -64,7 +68,8 @@ export const events: Event[] = [
     participants: 28,
     startDate: "2026-07-10",
     causeCategory: "Environment",
-    banner: "https://picsum.photos/seed/rainforest/800/400",
+    banner: "events/evt-004/banner",
+    video: "events/evt-004/video",
     story: "Every mile protects one acre of rainforest.",
     donationCTA: "Sponsor a mile",
   },
@@ -80,7 +85,8 @@ export const events: Event[] = [
     participants: 41,
     startDate: "2026-05-30",
     causeCategory: "Arts",
-    banner: "https://picsum.photos/seed/artgala/800/400",
+    banner: "events/evt-005/banner",
+    video: "events/evt-005/video",
     story: "An evening of art auction benefiting local animal shelters.",
     donationCTA: "Bid for a cause",
   },
@@ -96,7 +102,8 @@ export const events: Event[] = [
     participants: 0,
     startDate: "2026-09-12",
     causeCategory: "Health",
-    banner: "https://picsum.photos/seed/wellness/800/400",
+    banner: "events/evt-006/banner",
+    video: "events/evt-006/video",
     story: "Walk together for mental health awareness.",
     donationCTA: "Join the walk",
   },

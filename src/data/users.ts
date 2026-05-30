@@ -6,7 +6,7 @@ export const socialEntrepreneurs: SocialEntrepreneur[] = [
     name: "Alex Rivera",
     email: "alex.rivera@example.com",
     bio: "Community organizer passionate about health and environment causes.",
-    avatar: "https://picsum.photos/seed/alex/64/64",
+    avatar: "creators/se-001/avatar",
     causeInterests: ["Health", "Environment"],
     nonprofitId: "np-001",
   },
@@ -15,9 +15,18 @@ export const socialEntrepreneurs: SocialEntrepreneur[] = [
     name: "Jordan Lee",
     email: "jordan.lee@example.com",
     bio: "Education advocate connecting donors to classroom needs.",
-    avatar: "https://picsum.photos/seed/jordan/64/64",
+    avatar: "creators/se-002/avatar",
     causeInterests: ["Education", "Arts"],
     nonprofitId: "np-002",
+  },
+  {
+    id: "se-003",
+    name: "Morgan Ellis",
+    email: "morgan.ellis@example.com",
+    bio: "Environmental activist building community challenges for urban green spaces.",
+    avatar: "creators/se-003/avatar",
+    causeInterests: ["Environment", "Community"],
+    nonprofitId: "np-001",
   },
 ];
 

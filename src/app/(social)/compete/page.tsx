@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CdnImage } from "@/components/shared/CdnImage";
 import { TopBar } from "@/components/layout/TopBar";
 import { FlyWheelDiagram } from "@/components/social/FlyWheelDiagram";
 import { leaderboard } from "@/data/compete";
@@ -77,8 +78,21 @@ export default function CompetePage() {
               return (
                 <div
                   key={entry.id}
-                  className="rounded-2xl border-2 border-[var(--compete-purple)]/20 bg-white p-6 shadow-sm"
+                  className="overflow-hidden rounded-2xl border-2 border-[var(--compete-purple)]/20 bg-white shadow-sm"
                 >
+                  {event && (
+                    <div className="relative h-36 w-full">
+                      <CdnImage
+                        src={event.banner}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="(max-width:768px) 100vw, 33vw"
+                        cdnOptions={{ width: 600, height: 288, fit: "cover" }}
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
                   <p className="text-lg font-bold">🥊 {entry.challengeName.toUpperCase()}</p>
                   <p className="text-sm text-gray-500">
                     {entry.category} · {creator?.name}
@@ -110,6 +124,7 @@ export default function CompetePage() {
                   >
                     Join Competition →
                   </Link>
+                  </div>
                 </div>
               );
             })}

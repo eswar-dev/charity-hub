@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { EventHeroMedia } from "@/components/shared/EventHeroMedia";
 import { notFound } from "next/navigation";
 import { getEventById } from "@/data/events";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -17,7 +17,11 @@ export default function NonprofitEventDetailPage({
     <div>
       <Link href="/nonprofit/events" className="text-sm text-[var(--ch-teal)]">← Back</Link>
       <div className="mt-4 overflow-hidden rounded-2xl border bg-white shadow-sm">
-        <Image src={event.banner} alt="" width={800} height={300} className="h-48 w-full object-cover" />
+        <EventHeroMedia
+          event={event}
+          className="relative aspect-video w-full overflow-hidden bg-gray-900"
+          imageClassName="h-48 w-full object-cover"
+        />
         <div className="p-6">
           <div className="flex items-start justify-between">
             <h1 className="font-display text-2xl font-semibold">{event.title}</h1>

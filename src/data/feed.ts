@@ -13,7 +13,10 @@ export type FeedPost = {
   nonprofitId: string;
   eventId?: string;
   content: string;
+  /** CDN asset key for image poster / thumbnail */
   mediaUrl: string;
+  /** Optional CDN asset key for video (when mediaType is video_thumb) */
+  videoUrl?: string;
   mediaType: "image" | "video_thumb";
   likes: number;
   comments: number;
@@ -33,8 +36,9 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-001",
     content:
       "Round 4 just ended and the crowd is ELECTRIC 🥊 We've raised $8,240 so far for ALS research. Every punch thrown tonight brings a cure closer. Jump in — the link is in the event!",
-    mediaUrl: "https://picsum.photos/seed/knockout-ring/800/500",
-    mediaType: "image",
+    mediaUrl: "events/evt-001/banner",
+    videoUrl: "events/evt-001/video",
+    mediaType: "video_thumb",
     likes: 342,
     comments: 47,
     shares: 89,
@@ -51,7 +55,7 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-003",
     content:
       "🎒 MILESTONE HIT: 100 backpacks filled! We're halfway to our goal with 3 weeks left. These kids are going to walk into school ready to learn. Thank you for being part of this.",
-    mediaUrl: "https://picsum.photos/seed/backpacks/800/500",
+    mediaUrl: "events/evt-003/banner",
     mediaType: "image",
     likes: 218,
     comments: 31,
@@ -68,7 +72,7 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-002",
     content:
       "I challenge @JamieLee and @TaylorRoss to plant a tree in their city this weekend and tag #GreenCityChallenge. For every challenge completed, GreenPath Foundation gets a $25 donation unlocked. Who's in?",
-    mediaUrl: "https://picsum.photos/seed/treeplant/800/500",
+    mediaUrl: "events/evt-002/banner",
     mediaType: "image",
     likes: 189,
     comments: 63,
@@ -84,7 +88,7 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-001",
     content:
       "My uncle was diagnosed with ALS three years ago. He taught me how to box when I was 9. He can't throw a punch anymore — but tonight, every punch I take is for him. This is why I created the Knockout ALS event. This is what Charity Hub makes possible.",
-    mediaUrl: "https://picsum.photos/seed/story-boxer/800/500",
+    mediaUrl: "events/evt-001/banner",
     mediaType: "image",
     likes: 891,
     comments: 112,
@@ -101,7 +105,7 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-003",
     content:
       "IMPACT REVEAL 🌟 Last month's Drive for Literacy raised $12,400. Here's exactly where it went: 847 books purchased. 6 school libraries restocked. 3 after-school reading programs funded for 1 full year. This is what your participation creates.",
-    mediaUrl: "https://picsum.photos/seed/library/800/500",
+    mediaUrl: "events/evt-003/banner",
     mediaType: "image",
     likes: 1204,
     comments: 88,
@@ -118,7 +122,7 @@ export const feedPosts: FeedPost[] = [
     eventId: "evt-002",
     content:
       "Shoutout to the 32 people who showed up in the rain to clean up Riverside Park last Saturday ☔🌿 You made that park beautiful again. The city noticed. The kids playing there noticed. I noticed. See you at the next one.",
-    mediaUrl: "https://picsum.photos/seed/park-cleanup/800/500",
+    mediaUrl: "events/evt-002/banner",
     mediaType: "image",
     likes: 445,
     comments: 29,

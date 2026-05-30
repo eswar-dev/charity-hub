@@ -19,6 +19,7 @@ export default function ImpactPage({ params }: { params: { id: string } }) {
           eventId={event.id}
           totalRaised={event.raised}
           nonprofitName={nonprofit?.name ?? "Nonprofit"}
+          eventVideoKey={event.video}
         />
       </main>
     </div>

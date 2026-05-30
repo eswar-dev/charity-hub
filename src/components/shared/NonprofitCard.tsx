@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import type { Nonprofit } from "@/types";
 import { StatusBadge } from "./StatusBadge";
 import { TrustSignals } from "./TrustSignals";
@@ -27,12 +27,13 @@ export function NonprofitCard({
       aria-label={`Select ${nonprofit.name}`}
     >
       <div className="flex gap-4">
-        <Image
+        <CdnImage
           src={nonprofit.logo}
           alt=""
           width={56}
           height={56}
           className="rounded-xl object-cover"
+          cdnOptions={{ width: 112, height: 112, fit: "cover" }}
         />
         <div className="flex-1">
           <div className="flex items-start justify-between">

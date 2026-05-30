@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
+import { CdnVideo } from "@/components/shared/CdnVideo";
 import Link from "next/link";
 import { useState } from "react";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
@@ -69,12 +70,13 @@ export function FeedPostCard({ post, compact = false }: FeedPostCardProps) {
         <div className="flex items-start gap-3">
           {creator && (
             <Link href={`/creators/${creator.id}`}>
-              <Image
+              <CdnImage
                 src={creator.avatar}
                 alt=""
                 width={40}
                 height={40}
                 className="rounded-full ring-2 ring-[var(--story-ring)]"
+                cdnOptions={{ width: 80, height: 80, fit: "cover" }}
               />
             </Link>
           )}
@@ -104,13 +106,25 @@ export function FeedPostCard({ post, compact = false }: FeedPostCardProps) {
       </div>
 
       <div className="relative aspect-video w-full">
-        <Image
-          src={post.mediaUrl}
-          alt=""
-          fill
-          className="object-cover"
-          sizes="(max-width:768px) 100vw, 65vw"
-        />
+        {post.mediaType === "video_thumb" && post.videoUrl ? (
+          <CdnVideo
+            src={post.videoUrl}
+            poster={post.mediaUrl}
+            className="h-full w-full object-cover"
+            controls
+            muted
+            playsInline
+          />
+        ) : (
+          <CdnImage
+            src={post.mediaUrl}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width:768px) 100vw, 65vw"
+            cdnOptions={{ width: 1200, height: 675, fit: "cover" }}
+          />
+        )}
         {post.isLive && (
           <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/70 px-2 py-1 text-xs font-bold text-white">
             <span className="h-2 w-2 rounded-full bg-[var(--live-red)] animate-pulse-live" />

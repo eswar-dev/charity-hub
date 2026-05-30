@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import { useState } from "react";
 import { useToast } from "@/context/ToastContext";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -23,7 +23,7 @@ export function EventApprovalCard({ event }: EventApprovalCardProps) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-3">
           {se && (
-            <Image src={se.avatar} alt="" width={40} height={40} className="rounded-full" />
+            <CdnImage src={se.avatar} alt="" width={40} height={40} className="rounded-full" cdnOptions={{ width: 80, height: 80 }} />
           )}
           <div>
             <p className="text-sm font-medium text-gray-600">{se?.name ?? "SE"}</p>
@@ -43,7 +43,7 @@ export function EventApprovalCard({ event }: EventApprovalCardProps) {
       {expanded && (
         <div className="mt-4 space-y-4 border-t pt-4">
           <p className="text-sm text-gray-700">{event.story}</p>
-          <Image src={event.banner} alt="" width={400} height={120} className="rounded-xl object-cover" />
+          <CdnImage src={event.banner} alt="" width={400} height={120} className="rounded-xl object-cover" cdnOptions={{ width: 800, height: 240, fit: "cover" }} />
           {showChanges ? (
             <div>
               <textarea

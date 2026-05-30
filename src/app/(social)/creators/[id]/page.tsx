@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useState } from "react";
@@ -27,8 +27,6 @@ export default function CreatorProfilePage({
   const posts = getPostsBySeId(creator.id);
   const creatorEvents = events.filter((e) => e.seId === creator.id);
   const np = getNonprofitById(creator.linkedNonprofitIds[0] ?? "");
-  const handleSlug = creator.handle.replace("@", "");
-
   const tabs = [
     { id: "posts" as const, label: "Posts" },
     { id: "events" as const, label: "Events" },
@@ -51,18 +49,20 @@ export default function CreatorProfilePage({
     <div className="min-h-screen bg-[var(--feed-bg)]">
       <TopBar title={creator.name} breadcrumbs={["Creators", creator.name]} />
       <div className="relative h-48 bg-gradient-to-r from-[var(--ch-navy)] to-[var(--ch-teal)] md:h-56">
-        <Image
-          src={`https://picsum.photos/seed/${handleSlug}/1200/300`}
+        <CdnImage
+          src={creator.bannerKey}
           alt=""
           fill
           className="object-cover opacity-60"
+          cdnOptions={{ width: 1200, height: 300, fit: "cover" }}
         />
       </div>
       <div className="mx-auto max-w-4xl px-4 pb-12">
         <div className="-mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="flex gap-4">
-            <Image
+            <CdnImage
               src={creator.avatar}
+              cdnOptions={{ width: 240, height: 240, fit: "cover" }}
               alt=""
               width={120}
               height={120}
@@ -104,7 +104,7 @@ export default function CreatorProfilePage({
             href="/nonprofit/launchpad"
             className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[var(--ch-teal)]"
           >
-            <Image src={np.logo} alt="" width={24} height={24} className="rounded" />
+            <CdnImage src={np.logo} alt="" width={24} height={24} className="rounded" cdnOptions={{ width: 48, height: 48 }} />
             {np.name} ✓
           </Link>
         )}

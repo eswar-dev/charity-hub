@@ -37,7 +37,7 @@ export default function CreateStoryPage() {
     nonprofitId: "np-001",
     eventId,
     content: content || "Your post preview will appear here…",
-    mediaUrl: "https://picsum.photos/seed/preview/800/500",
+    mediaUrl: "placeholders/preview",
     mediaType: "image",
     likes: 0,
     comments: 0,
