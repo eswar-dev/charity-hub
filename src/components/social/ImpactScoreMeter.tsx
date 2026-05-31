@@ -51,13 +51,15 @@ export function ImpactScoreMeter({
         />
       </svg>
       <p
-        className="font-impact -mt-20 text-4xl font-bold text-[var(--ch-teal)]"
+        className="font-impact relative -mt-[4.85rem] text-4xl font-bold leading-none text-[var(--ch-teal)]"
         style={{ fontFamily: "var(--font-impact)" }}
       >
         {score.toLocaleString()}
       </p>
       {percentile && (
-        <p className="mt-8 text-xs text-gray-500">{percentile}</p>
+        <p className="relative pt-2 mt-3 max-w-[12rem] text-xs leading-snug text-gray-500">
+          {percentile}
+        </p>
       )}
     </div>
   );

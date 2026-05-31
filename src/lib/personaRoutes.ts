@@ -2,11 +2,11 @@ import type { Persona } from "@/types";
 
 /** Default home route when switching persona in the top dropdown */
 export const personaHomeRoutes: Record<Persona, string> = {
-  guest: "/feed",
+  guest: "/",
   se: "/se/dashboard",
   nonprofit: "/nonprofit/launchpad",
   admin: "/admin",
-  founder: "/",
+  founder: "/flows",
 };
 
 /** Infer persona from current URL so the dropdown stays in sync */
@@ -26,7 +26,7 @@ export function personaFromPath(pathname: string): Persona | null {
   ) {
     return "guest";
   }
+  if (pathname === "/") return "guest";
   if (pathname.startsWith("/flows")) return "founder";
-  if (pathname === "/") return "founder";
   return null;
 }

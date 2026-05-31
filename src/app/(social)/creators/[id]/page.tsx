@@ -3,7 +3,7 @@
 import { CdnImage } from "@/components/shared/CdnImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TopBar } from "@/components/layout/TopBar";
 import { getCreatorById } from "@/data/creators";
 import { getPostsBySeId } from "@/data/feed";
@@ -27,13 +27,6 @@ export default function CreatorProfilePage({
   const posts = getPostsBySeId(creator.id);
   const creatorEvents = events.filter((e) => e.seId === creator.id);
   const np = getNonprofitById(creator.linkedNonprofitIds[0] ?? "");
-  const tabs = [
-    { id: "posts" as const, label: "Posts" },
-    { id: "events" as const, label: "Events" },
-    { id: "impact" as const, label: "Impact" },
-    { id: "about" as const, label: "About" },
-  ];
-
   const timeline = [
     { date: "Sep 2025", text: "Joined Charity Hub" },
     { date: "Oct 2025", text: "First Event Created" },
@@ -42,88 +35,154 @@ export default function CreatorProfilePage({
     { date: "Apr 2026", text: `$${Math.floor(creator.totalRaised / 2).toLocaleString()} total raised` },
     { date: "May 2026", text: "Top Creator badge earned" },
   ];
+  const tabCounts = {
+    posts: posts.length,
+    events: creatorEvents.length,
+    impact: timeline.length,
+    about: 1,
+  };
+  const tabs = [
+    { id: "posts" as const, label: "Posts" },
+    { id: "events" as const, label: "Events" },
+    { id: "impact" as const, label: "Impact" },
+    { id: "about" as const, label: "About" },
+  ] as const;
+
+  const monthlyImpact = Math.round(creator.impactScore * 0.12);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("ch-follow-creators");
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      setFollowing(ids.includes(creator.id));
+    } catch {
+      /* ignore */
+    }
+  }, [creator.id]);
+
+  const toggleFollow = () => {
+    try {
+      const raw = localStorage.getItem("ch-follow-creators");
+      const ids: string[] = raw ? JSON.parse(raw) : [];
+      const next = following
+        ? ids.filter((id) => id !== creator.id)
+        : [...ids.filter((id) => id !== creator.id), creator.id];
+      localStorage.setItem("ch-follow-creators", JSON.stringify(next));
+      setFollowing(!following);
+    } catch {
+      setFollowing(!following);
+    }
+  };
 
   const monthlyBars = [40, 55, 70, 65, 90, 100];
 
   return (
     <div className="min-h-screen bg-[var(--feed-bg)]">
       <TopBar title={creator.name} breadcrumbs={["Creators", creator.name]} />
-      <div className="relative h-48 bg-gradient-to-r from-[var(--ch-navy)] to-[var(--ch-teal)] md:h-56">
+
+      <div className="relative h-40 shrink-0 overflow-hidden bg-[var(--ch-navy)] sm:h-48 md:h-52">
         <CdnImage
           src={creator.bannerKey}
           alt=""
           fill
-          className="object-cover opacity-60"
-          cdnOptions={{ width: 1200, height: 300, fit: "cover" }}
+          className="object-cover"
+          sizes="100vw"
+          cdnOptions={{ width: 1200, height: 400, fit: "cover" }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
       </div>
-      <div className="mx-auto max-w-4xl px-4 pb-12">
-        <div className="-mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="flex gap-4">
-            <CdnImage
-              src={creator.avatar}
-              cdnOptions={{ width: 240, height: 240, fit: "cover" }}
-              alt=""
-              width={120}
-              height={120}
-              className="rounded-full border-4 border-white shadow-lg"
-            />
-            <div className="pt-14 md:pt-16">
-              <h1 className="font-display text-3xl font-semibold text-[var(--ch-navy)]">
-                {creator.name}
-              </h1>
-              <p className="text-gray-500">{creator.handle}</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {creator.badges.map((b) => (
-                  <span
-                    key={b}
-                    className="rounded-full bg-teal-50 px-2 py-0.5 text-xs font-medium text-teal-800"
-                  >
-                    {b}
-                  </span>
-                ))}
+
+      <div className="relative z-10 mx-auto max-w-4xl px-4">
+        <div className="relative -mt-14 sm:-mt-16 md:-mt-[4.5rem]">
+          <div className="rounded-2xl border border-gray-100 bg-white p-4 pb-5 pt-24 shadow-sm sm:p-6 sm:pb-6 md:pt-6">
+            <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2 md:left-6 md:translate-x-0">
+              <CdnImage
+                src={creator.avatar}
+                cdnOptions={{ width: 240, height: 240, fit: "cover" }}
+                alt=""
+                width={112}
+                height={112}
+                className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-lg md:h-32 md:w-32"
+              />
+            </div>
+
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+              <div className="min-w-0 text-center md:pl-36 md:text-left">
+                <h1 className="font-display text-2xl font-semibold text-[var(--ch-navy)] sm:text-3xl">
+                  {creator.name}
+                </h1>
+                <p className="text-gray-500">{creator.handle}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {creator.badges.map((b) => (
+                    <span
+                      key={b}
+                      className="rounded-full bg-teal-50 px-2 py-0.5 text-xs font-medium text-teal-800"
+                    >
+                      {b}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="hidden shrink-0 md:block md:pt-1">
+                <ImpactScoreMeter
+                  score={creator.impactScore}
+                  percentile="Top 5% of Social Entrepreneurs on Charity Hub"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 border-t border-gray-100 pt-6">
+              <p className="text-sm text-gray-600">
+                {creator.eventsCreated} Events · {creator.totalParticipants} Participants ·
+                Impact Score: {creator.impactScore.toLocaleString()} · $
+                {creator.totalRaised.toLocaleString()} raised
+              </p>
+              <p className="mt-2 text-sm font-medium text-[var(--ch-teal)]">
+                +{monthlyImpact.toLocaleString()} impact this month
+              </p>
+              <p className="mt-4 max-w-2xl text-gray-700">{creator.bio}</p>
+              {np && (
+                <Link
+                  href="/nonprofit/launchpad"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[var(--ch-teal)]"
+                >
+                  <CdnImage
+                    src={np.logo}
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="rounded object-cover"
+                    cdnOptions={{ width: 48, height: 48, fit: "cover" }}
+                  />
+                  {np.name} ✓
+                </Link>
+              )}
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={toggleFollow}
+                  className={`rounded-full px-6 py-2.5 text-sm font-medium ${
+                    following ? "border bg-white" : "bg-[var(--ch-teal)] text-white"
+                  }`}
+                >
+                  {following ? "Following" : "Follow"}
+                </button>
+                <button type="button" className="rounded-full border bg-white px-6 py-2.5 text-sm">
+                  Message
+                </button>
               </div>
             </div>
           </div>
-          <div className="hidden md:block">
-            <ImpactScoreMeter
-              score={creator.impactScore}
-              percentile="Top 5% of Social Entrepreneurs on Charity Hub"
-            />
-          </div>
         </div>
 
-        <p className="mt-6 text-sm text-gray-600">
-          {creator.eventsCreated} Events · {creator.totalParticipants} Participants · $
-          {creator.totalRaised.toLocaleString()} Raised · Impact Score:{" "}
-          {creator.impactScore.toLocaleString()}
-        </p>
-        <p className="mt-4 max-w-2xl text-gray-700">{creator.bio}</p>
-        {np && (
-          <Link
-            href="/nonprofit/launchpad"
-            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[var(--ch-teal)]"
-          >
-            <CdnImage src={np.logo} alt="" width={24} height={24} className="rounded" cdnOptions={{ width: 48, height: 48 }} />
-            {np.name} ✓
-          </Link>
-        )}
-        <div className="mt-6 flex gap-3">
-          <button
-            type="button"
-            onClick={() => setFollowing(!following)}
-            className={`rounded-full px-6 py-2.5 text-sm font-medium ${
-              following ? "border" : "bg-[var(--ch-teal)] text-white"
-            }`}
-          >
-            {following ? "Following" : "Follow"}
-          </button>
-          <button type="button" className="rounded-full border px-6 py-2.5 text-sm">
-            Message
-          </button>
+        <div className="mt-8 md:hidden">
+          <ImpactScoreMeter
+            score={creator.impactScore}
+            percentile="Top 5% of Social Entrepreneurs on Charity Hub"
+          />
         </div>
 
-        <div className="mt-8 flex gap-6 border-b">
+        <div className="mt-8 flex gap-6 border-b border-gray-200 bg-[var(--feed-bg)]">
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -136,11 +195,14 @@ export default function CreatorProfilePage({
               }`}
             >
               {t.label}
+              <span className="ml-1.5 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600">
+                {tabCounts[t.id]}
+              </span>
             </button>
           ))}
         </div>
 
-        <div className="py-8">
+        <div className="pb-12 pt-8">
           {tab === "posts" && (
             <div className="space-y-6">
               {posts.length > 0 ? (

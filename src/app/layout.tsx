@@ -7,9 +7,11 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { PersonaProvider } from "@/context/PersonaContext";
+import { HeaderOverlayProvider } from "@/context/HeaderOverlayContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { PrototypeWatermark } from "@/components/shared/PrototypeWatermark";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { GuestBanner } from "@/components/layout/GuestBanner";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -54,11 +56,14 @@ export default function RootLayout({
     >
       <body className="min-h-screen pb-16 antialiased md:pb-0" style={{ fontFamily: "var(--font-body)" }}>
         <PersonaProvider>
-          <ToastProvider>
-            {children}
+          <HeaderOverlayProvider>
+            <ToastProvider>
+              <GuestBanner />
+              {children}
             <MobileBottomNav />
             <PrototypeWatermark />
-          </ToastProvider>
+            </ToastProvider>
+          </HeaderOverlayProvider>
         </PersonaProvider>
       </body>
     </html>

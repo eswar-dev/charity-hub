@@ -155,3 +155,19 @@ body {
   stroke-dashoffset: 40;
   animation: flywheel-dash 6s linear infinite;
 }
+
+@keyframes hero-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.05);
+  }
+}
+
+.animate-hero-glow {
+  animation: hero-glow 4s ease-in-out infinite;
+}

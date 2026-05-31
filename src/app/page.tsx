@@ -1,283 +1,312 @@
 "use client";
 
 import Link from "next/link";
-import { TopBar } from "@/components/layout/TopBar";
-import { personaHomeRoutes } from "@/lib/personaRoutes";
-import type { Persona } from "@/types";
-import {
-  ArrowRight,
-  Building2,
-  Heart,
-  LayoutDashboard,
-  Sparkles,
-  Users,
-  Zap,
-  Smartphone,
-} from "lucide-react";
+import { Users, Zap, Heart, ArrowRight } from "lucide-react";
+import { LandingHeader } from "@/components/landing/LandingHeader";
+import { LandingHeroStack } from "@/components/landing/LandingHeroStack";
+import { LandingFeaturedCreator } from "@/components/landing/LandingFeaturedCreator";
+import { FeedPostCard } from "@/components/social/FeedPostCard";
+import { ImpactMomentCard } from "@/components/social/ImpactMomentCard";
+import { FlyWheelDiagram } from "@/components/social/FlyWheelDiagram";
+import { useIdentityGate } from "@/hooks/useIdentityGate";
+import { PersonaSwitcher } from "@/components/layout/PersonaSwitcher";
+import { feedPosts } from "@/data/feed";
+import { creators } from "@/data/creators";
+import { CdnImage } from "@/components/shared/CdnImage";
 
-const personaCards: {
-  persona: Persona;
-  title: string;
-  description: string;
-  href: string;
-  icon: typeof Heart;
-  color: string;
-}[] = [
-  {
-    persona: "guest",
-    title: "Guest / Anonymous",
-    description: "Public event discovery — no login wall",
-    href: "/events",
-    icon: Users,
-    color: "var(--ch-gray-600)",
-  },
-  {
-    persona: "se",
-    title: "Social Entrepreneur",
-    description: "Alex Rivera — onboarding, events, profile",
-    href: "/se/dashboard",
-    icon: Sparkles,
-    color: "#7C3AED",
-  },
-  {
-    persona: "nonprofit",
-    title: "501(c)(3) Nonprofit Admin",
-    description: "GreenPath Foundation — Launchpad & approvals",
-    href: "/nonprofit/launchpad",
-    icon: Building2,
-    color: "var(--ch-teal)",
-  },
-  {
-    persona: "admin",
-    title: "Charity Hub Admin",
-    description: "Review queue, moderation, payments",
-    href: "/admin",
-    icon: LayoutDashboard,
-    color: "var(--ch-navy)",
-  },
-  {
-    persona: "founder",
-    title: "Founders / Operators",
-    description: "Ecosystem overview & flow diagrams",
-    href: "/flows",
-    icon: Zap,
-    color: "var(--ch-amber)",
-  },
+const landingFeedIds = ["post-004", "post-001", "post-005"];
+
+const causeTiles = [
+  { name: "Environment", emoji: "🌱", query: "Environment", image: "events/evt-002/banner", count: 8 },
+  { name: "Education", emoji: "📚", query: "Education", image: "events/evt-003/banner", count: 5 },
+  { name: "Health", emoji: "❤️", query: "Health", image: "events/evt-001/banner", count: 6 },
+  { name: "Arts", emoji: "🎨", query: "Arts", image: "events/evt-005/banner", count: 3 },
+  { name: "Animals", emoji: "🐾", query: "Animals", image: "nonprofits/np-002/logo", count: 2 },
+  { name: "Human Services", emoji: "🏘", query: "Human Services", image: "nonprofits/np-003/logo", count: 4 },
 ];
 
-const socialCard = {
-  title: "Social Media Layer",
-  description:
-    "Feed, competition, creator profiles, and the platform story",
-  href: "/feed",
-  icon: Smartphone,
-  color: "var(--compete-purple)",
-};
-
-const loop = ["Awareness", "Participation", "Engagement", "Donation", "Distribution / Impact"];
-
-const layers = [
-  { name: "Admin Layer", items: "Review · Moderation · Monitoring", solid: true },
-  { name: "Trust Layer", items: "Verification · Approval · Controls", solid: true },
-  { name: "Engagement Layer", items: "Events · Content · Posts", solid: true },
-  { name: "Giving Layer", items: "Donation · Transactions", solid: true },
-  { name: "Impact Layer", items: "Progress · Impact Reveal", solid: true },
-  { name: "Stripe / Payments", items: "Phase 3 / SOW-2", solid: false },
-  { name: "AI Support", items: "Phase 1/2 internal", solid: false },
+const steps = [
+  { n: 1, title: "Discover", desc: "Browse the living feed anonymously" },
+  { n: 2, title: "Feel It", desc: "Read the story behind the cause and event" },
+  { n: 3, title: "Engage", desc: "Like, share, comment, and challenge your network" },
+  { n: 4, title: "Participate", desc: "Join an event, create content, give if moved to" },
+  { n: 5, title: "Impact", desc: "See where it all went. Come back for more." },
 ];
 
 export default function LandingPage() {
-  return (
-    <div className="min-h-screen bg-[var(--ch-cream)]">
-      <TopBar title="Ecosystem Overview" />
+  const { openGate, GateModal } = useIdentityGate("/");
 
-      <main className="mx-auto max-w-6xl px-4 py-10 lg:px-8">
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--ch-navy)] via-[#134063] to-[var(--ch-teal)] px-8 py-16 text-white">
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,#14BDBD_0%,transparent_50%)]" />
-          <div className="relative max-w-2xl">
-            <p className="text-sm uppercase tracking-widest text-teal-200/90">
-              Static Prototype v2.0
-            </p>
-            <h1 className="font-display mt-4 text-3xl font-bold leading-tight md:text-4xl">
-              The social participation network where creativity creates real-world change
+  const openJoinGate = (title: string, returnPath = "/feed") => {
+    openGate({ action: "join", eventTitle: title, returnPath });
+  };
+
+  const landingPosts = landingFeedIds
+    .map((id) => feedPosts.find((p) => p.id === id))
+    .filter(Boolean);
+
+  return (
+    <div className="min-h-screen bg-white">
+      <LandingHeader />
+
+      <section className="relative min-h-[90vh] border-b border-gray-100 bg-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 lg:grid-cols-[55%_45%] lg:py-24">
+          <div className="animate-fade-up">
+            <span className="inline-block rounded-full bg-teal-50 px-4 py-1 text-xs font-bold uppercase tracking-wide text-[var(--ch-teal)]">
+              Competition For Good
+            </span>
+            <h1 className="font-display mt-6 text-4xl font-semibold leading-tight text-[var(--ch-navy)] md:text-[56px]">
+              Any event can become
+              <br />
+              a reason to give.
             </h1>
-            <p className="mt-4 text-lg text-teal-50/90">
-              Social Entrepreneurs create cause-driven events. Communities participate. Impact follows.
-            </p>
-            <p className="mt-2 text-sm opacity-80">
-              Any event can become a reason to give.
+            <p className="mt-6 max-w-[480px] text-lg text-gray-600">
+              Social Entrepreneurs turn creative events, stories, and community energy into
+              real-world change. Nonprofit causes come alive. Giving follows naturally.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/feed"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--ch-navy)]"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--ch-teal)] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-teal-900/10 transition hover:opacity-90"
               >
-                Explore the Feed
+                Explore What&apos;s Happening
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/about/mental-model"
-                className="inline-flex items-center gap-2 rounded-full border border-white/50 px-6 py-3 text-sm font-medium"
+                href="/se/events/create"
+                className="rounded-full border-2 border-[var(--ch-teal)] px-8 py-3.5 text-sm font-semibold text-[var(--ch-teal)]"
               >
-                See How We&apos;re Different
-                <ArrowRight className="h-4 w-4" />
+                Create an Event
+              </Link>
+            </div>
+            <p className="mt-8 text-sm text-gray-500">
+              👥 2,847 participants this month · 🏛 23 verified nonprofits · 💚 $89K raised
+            </p>
+          </div>
+          <div className="hidden lg:block">
+            <p className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-gray-400">
+              Live Right Now
+            </p>
+            <LandingHeroStack />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--ch-cream)] px-6 py-16">
+        <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-3">
+          {[
+            {
+              icon: Users,
+              title: "Participate First",
+              body: "Discover causes through stories, events, and community moments. No obligation. No pitch.",
+            },
+            {
+              icon: Zap,
+              title: "Competition For Good",
+              body: "Social Entrepreneurs and nonprofits compete creatively for impact. Not for likes. For change.",
+            },
+            {
+              icon: Heart,
+              title: "Giving Follows Naturally",
+              body: "When a cause moves you, giving happens. Not because you were asked. Because you were part of something real.",
+            },
+          ].map(({ icon: Icon, title, body }) => (
+            <div key={title} className="text-center md:text-left">
+              <Icon className="mx-auto h-10 w-10 text-[var(--ch-teal)] md:mx-0" />
+              <h3 className="mt-4 text-sm font-bold uppercase tracking-wide text-[var(--ch-navy)]">
+                {title}
+              </h3>
+              <p className="mt-2 text-gray-600">{body}</p>
+            </div>
+          ))}
+        </div>
+        <p className="font-display mx-auto mt-12 max-w-2xl text-center text-xl italic text-[var(--ch-navy)]">
+          &ldquo;The algorithm&apos;s job is to amplify what creates the most good.&rdquo;
+        </p>
+      </section>
+
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-display text-3xl font-semibold text-[var(--ch-navy)]">
+              What&apos;s happening right now
+            </h2>
+            <Link href="/feed" className="text-sm font-semibold text-[var(--ch-teal)]">
+              See full feed →
+            </Link>
+          </div>
+          <div className="-mx-2 flex gap-6 overflow-x-auto pb-4">
+            {landingPosts.map((post) => (
+              <div key={post!.id} className="w-[min(100%,380px)] shrink-0 snap-center">
+                {post!.type === "impact_reveal" ? (
+                  <ImpactMomentCard
+                    post={post!}
+                    onJoinEvent={() => openJoinGate("Drive for Literacy")}
+                  />
+                ) : (
+                  <FeedPostCard
+                    post={post!}
+                    onJoinEvent={(_, title) => openJoinGate(title)}
+                    onCommentGate={() => openGate({ action: "comment", returnPath: "/" })}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--ch-navy)] px-6 py-20 text-white">
+        <div className="mx-auto max-w-6xl text-center">
+          <h2 className="font-display text-3xl font-semibold md:text-4xl">
+            Join the participation network for good
+          </h2>
+          <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-2">
+            {steps.map((step, i) => (
+              <div key={step.n} className="flex items-center">
+                <div className="w-40 rounded-xl border border-white/10 bg-white/5 p-4 text-left backdrop-blur sm:w-44">
+                  <p
+                    className="text-6xl leading-none text-[var(--ch-teal)] opacity-30"
+                    style={{ fontFamily: "var(--font-impact)" }}
+                  >
+                    {step.n}
+                  </p>
+                  <p className="mt-2 font-bold">{step.title}</p>
+                  <p className="mt-1 text-xs text-white/70">{step.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <span className="mx-1 hidden text-[var(--ch-teal)] md:inline">→</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/feed"
+              className="rounded-full bg-[var(--ch-teal)] px-8 py-3 font-semibold text-white"
+            >
+              Start Exploring →
+            </Link>
+            <Link
+              href="/about/mental-model"
+              className="rounded-full border border-white/40 px-8 py-3 font-semibold"
+            >
+              How We&apos;re Different →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="font-display text-3xl font-semibold text-[var(--ch-navy)]">
+            The creators making it happen
+          </h2>
+          <p className="mt-2 text-gray-600">
+            Social Entrepreneurs bring creative energy to causes that matter.
+          </p>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {creators.map((c) => (
+              <LandingFeaturedCreator key={c.id} creator={c} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-teal-50/80 px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="font-display text-3xl font-semibold text-[var(--ch-navy)]">
+            Find a cause that moves you
+          </h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {causeTiles.map((c) => (
+              <Link
+                key={c.name}
+                href={`/explore?cause=${encodeURIComponent(c.query)}`}
+                className="group relative aspect-[16/10] overflow-hidden rounded-2xl"
+              >
+                <CdnImage
+                  src={c.image}
+                  alt=""
+                  fill
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                  sizes="400px"
+                  cdnOptions={{ width: 600, height: 375, fit: "cover" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-5 text-white">
+                  <p className="text-2xl">
+                    {c.emoji} <span className="font-bold">{c.name}</span>
+                  </p>
+                  <p className="text-sm text-white/80">{c.count} active events</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--ch-teal)] px-6 py-16 text-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest opacity-80">
+              Competition For Good
+            </p>
+            <h2 className="font-display mt-2 text-3xl font-semibold">
+              The social participation engine powering Charity Hub.
+            </h2>
+            <p className="mt-4 text-teal-100">Not likes. Not ads. Real-world change.</p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link
+                href="/compete/leaderboard"
+                className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-[var(--ch-teal)]"
+              >
+                See the Leaderboard →
+              </Link>
+              <Link
+                href="/compete"
+                className="rounded-full border border-white/60 px-6 py-2.5 text-sm font-semibold"
+              >
+                Join a Competition →
               </Link>
             </div>
           </div>
-        </section>
-
-        <section className="mt-16">
-          <h2 className="font-display text-2xl font-semibold text-[var(--ch-navy)]">
-            Platform Ecosystem
-          </h2>
-          <div className="mt-6 grid gap-3">
-            {layers.map((layer) => (
-              <div
-                key={layer.name}
-                className={`rounded-xl px-6 py-4 ${
-                  layer.solid
-                    ? "border border-gray-100 bg-white shadow-sm"
-                    : "border-2 border-dashed border-gray-300 bg-gray-50/80 opacity-75"
-                }`}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="font-semibold text-[var(--ch-navy)]">
-                    {layer.name}
-                  </span>
-                  {!layer.solid && (
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-800">
-                      Phase 3 / Demo
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-gray-600">{layer.items}</p>
-              </div>
-            ))}
+          <div>
+            <FlyWheelDiagram variant="onDark" />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-12">
-          <h2 className="font-display text-xl font-semibold text-[var(--ch-navy)]">
-            Core Product Loop
-          </h2>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {loop.map((step, i) => (
-              <span key={step} className="flex items-center gap-2">
-                <span className="rounded-full bg-[var(--ch-teal)] px-4 py-2 text-xs font-medium text-white">
-                  {step}
-                </span>
-                {i < loop.length - 1 && (
-                  <ArrowRight className="h-4 w-4 text-gray-400" aria-hidden />
-                )}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-16">
-          <h2 className="font-display text-2xl font-semibold text-[var(--ch-navy)]">
-            Enter a Persona Experience
-          </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {personaCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <Link
-                  key={card.persona}
-                  href={personaHomeRoutes[card.persona]}
-                  className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-                >
-                  <div
-                    className="inline-flex rounded-xl p-3 text-white"
-                    style={{ backgroundColor: card.color }}
-                  >
-                    <Icon className="h-5 w-5" aria-hidden />
-                  </div>
-                  <h3 className="font-display mt-4 text-lg font-semibold group-hover:text-[var(--ch-teal)]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-600">{card.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[var(--ch-teal)]">
-                    Enter <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Link>
-              );
-            })}
-            <Link
-              href={socialCard.href}
-              className="group rounded-2xl border border-purple-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg sm:col-span-2 lg:col-span-1"
-            >
-              <div
-                className="inline-flex rounded-xl p-3 text-white"
-                style={{ backgroundColor: socialCard.color }}
-              >
-                <Smartphone className="h-5 w-5" aria-hidden />
-              </div>
-              <h3 className="font-display mt-4 text-lg font-semibold group-hover:text-[var(--compete-purple)]">
-                📱 {socialCard.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">{socialCard.description}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[var(--compete-purple)]">
-                Enter Social Experience <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-          </div>
-        </section>
-
-        <section className="mt-16">
-          <h2 className="font-display text-center text-2xl font-semibold text-[var(--ch-navy)]">
-            NOT just another fundraising platform.
-          </h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "Like Instagram for good causes",
-                points: ["Storytelling", "Content feed", "Community"],
-              },
-              {
-                title: "Like a competition for change",
-                points: ["Friendly rivalry", "SE vs SE", "Causes collide"],
-              },
-              {
-                title: "Unlike anything else",
-                points: [
-                  "Donations as by-product",
-                  "Of real engagement",
-                  "Impact-first algorithm",
-                ],
-              },
-            ].map((col) => (
-              <div
-                key={col.title}
-                className="rounded-2xl border bg-white p-6 shadow-sm"
-              >
-                <h3 className="font-semibold text-[var(--ch-navy)]">{col.title}</h3>
-                <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                  {col.points.map((p) => (
-                    <li key={p}>→ {p}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-12 rounded-2xl border bg-white p-8 text-center shadow-sm">
-          <Heart className="mx-auto h-8 w-8 text-[var(--ch-coral)]" aria-hidden />
-          <h2 className="font-display mt-4 text-xl font-semibold">
-            Workflow Diagrams
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Six interactive lifecycle diagrams with phase annotations
-          </p>
+      <section className="px-6 py-20 text-center">
+        <h2 className="font-display text-3xl font-semibold text-[var(--ch-navy)] md:text-[40px]">
+          Ready to turn your energy into something real?
+        </h2>
+        <p className="mx-auto mt-4 max-w-lg text-lg text-gray-600">
+          Start as a guest. No account needed to discover and feel. Create when you&apos;re
+          ready.
+        </p>
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link
-            href="/flows"
-            className="mt-6 inline-flex rounded-full border-2 border-[var(--ch-navy)] px-8 py-3 text-sm font-medium text-[var(--ch-navy)] hover:bg-[var(--ch-navy)] hover:text-white transition"
+            href="/feed"
+            className="rounded-full bg-[var(--ch-teal)] px-10 py-4 text-sm font-semibold text-white"
           >
-            View Flow Index
+            Explore the Feed →
           </Link>
-        </section>
-      </main>
+          <Link
+            href="/se/events/create"
+            className="rounded-full border-2 border-[var(--ch-teal)] px-10 py-4 text-sm font-semibold text-[var(--ch-teal)]"
+          >
+            Create an Event →
+          </Link>
+        </div>
+        <div className="mt-16 flex flex-col items-center gap-2">
+          <span className="rounded-full bg-gray-100 px-3 py-1 text-[10px] font-medium text-gray-500">
+            Prototype Mode
+          </span>
+          <PersonaSwitcher />
+        </div>
+      </section>
+
+      {GateModal}
     </div>
   );
 }

@@ -35,7 +35,7 @@ function PersonaPathSync({
 }
 
 export function PersonaProvider({ children }: { children: ReactNode }) {
-  const [persona, setPersonaState] = useState<Persona>("founder");
+  const [persona, setPersonaState] = useState<Persona>("guest");
   const setPersona = useCallback((p: Persona) => setPersonaState(p), []);
 
   return (

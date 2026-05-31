@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { consumePostAuthReturn } from "@/lib/guestEngagement";
+import { usePersona } from "@/context/PersonaContext";
 import Link from "next/link";
 import { EventCard } from "@/components/shared/EventCard";
 import { events } from "@/data/events";
@@ -13,6 +15,7 @@ export default function SEOnboardingPage() {
   const [step, setStep] = useState(0);
   const [selectedNp, setSelectedNp] = useState<string | null>(null);
   const router = useRouter();
+  const { setPersona } = usePersona();
   const sampleEvent = events[0];
 
   if (step === 0) {
@@ -75,7 +78,10 @@ export default function SEOnboardingPage() {
       <button
         type="button"
         disabled={!selectedNp}
-        onClick={() => router.push("/se/dashboard")}
+        onClick={() => {
+          setPersona("se");
+          router.push(consumePostAuthReturn("/se/dashboard"));
+        }}
         className="mt-6 w-full rounded-full bg-purple-600 py-3 text-sm text-white disabled:opacity-40"
       >
         Complete Setup
